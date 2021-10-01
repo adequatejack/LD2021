@@ -27,6 +27,8 @@ public class SC_FPSController : MonoBehaviour
     public float cameraCrouchHeight = 0f;
     private float height;
 
+    public bool CursorLocked = true;
+
     private Vector3 cameraHeight;
     void Start()
     {
@@ -39,16 +41,23 @@ public class SC_FPSController : MonoBehaviour
         cameraHeight.y = cameraBaseHeight;
     }
 
+    // purpose: converts bools into 1 or 0
+    int conBool(bool x) { return x ? 1 : 0; }
+
     void Update()
     {
-		if(Input.GetKey("k"))
-		{
-			Cursor.visible = true;
-		}
-		if(Input.GetKey("l"))
-		{
-			Cursor.visible = false;
-		}
+        switch (CursorLocked)
+        {
+            case true:
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+                break;
+            case false:
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+                break;
+
+        }
         // We are grounded, so recalculate move direction based on axes
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
@@ -82,10 +91,10 @@ public class SC_FPSController : MonoBehaviour
         // Player and Camera rotation
         if (canMove)
         {
-            rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
+            rotationX += -Input.GetAxis("Mouse Y") * lookSpeed * conBool(CursorLocked);
             rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
             playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
-            transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
+            transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed * conBool(CursorLocked), 0);
         }
     }
     void FixedUpdate()

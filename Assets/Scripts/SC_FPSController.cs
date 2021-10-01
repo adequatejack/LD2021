@@ -92,11 +92,11 @@ public class SC_FPSController : MonoBehaviour
     {
         if(Input.GetKey(KeyCode.LeftControl))
         {
-            characterController.height = Mathf.Lerp(characterController.height, crouchHeight, 0.1f);
-            cameraHeight.y = Mathf.Lerp(playerCamera.transform.localPosition.y, cameraCrouchHeight, 0.1f);
+            characterController.height = Mathf.Lerp(characterController.height, crouchHeight, 10 * Time.deltaTime);
+            cameraHeight.y = Mathf.Lerp(playerCamera.transform.localPosition.y, cameraCrouchHeight, 10 * Time.deltaTime);
         }else{
-            characterController.height = Mathf.Lerp(characterController.height, baseHeight, 0.1f);
-            cameraHeight.y = Mathf.Lerp(playerCamera.transform.localPosition.y, cameraBaseHeight, 0.1f);
+            characterController.height = Mathf.Lerp(characterController.height, baseHeight, 10 * Time.deltaTime);
+            cameraHeight.y = Mathf.Lerp(playerCamera.transform.localPosition.y, cameraBaseHeight, 10 * Time.deltaTime);
         }
         playerCamera.transform.localPosition = cameraHeight;
     }
